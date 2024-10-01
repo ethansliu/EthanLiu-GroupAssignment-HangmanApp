@@ -30,7 +30,6 @@ import kotlin.random.Random
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        // Set the content of the activity
         setContent {
             HangmanGameApp()
         }
@@ -43,7 +42,7 @@ fun HangmanGameApp(gameViewModel: GameViewModel = viewModel()) {
     val isLandscape =
         configuration.orientation == android.content.res.Configuration.ORIENTATION_LANDSCAPE
 
-    // Choose layout based on orientation
+    // Choose layout based on device orientation
     if (isLandscape) {
         LandscapeLayout(gameViewModel)
     } else {
@@ -52,13 +51,13 @@ fun HangmanGameApp(gameViewModel: GameViewModel = viewModel()) {
 }
 
 
-
+// use ViewModel data type to store past reconfiguration
 class GameViewModel : ViewModel() {
     private val wordList = listOf("Noise", "Coffee", "Sailor", "Morning", "Star")
     private val hintList = listOf("Any unwanted or disruptive sound", "One of the most popular beverages worldwide", "Person who works aboard boats and ships", "Word comes from the old English word Morgen", "Massive, luminous sphere of plasma")
     private val maxWrongGuesses = 6
 
-    // mutable variables
+    // mutable variables for the GameViewModel class
     var secretWord by mutableStateOf("")
     var displayedWord by mutableStateOf("")
     var wrongGuesses by mutableStateOf(0)
@@ -138,7 +137,7 @@ class GameViewModel : ViewModel() {
     }
 }
 
-// Layouts.kt
+// Provides the layout for Landscape orientatiom
 @Composable
 fun LandscapeLayout(gameViewModel: GameViewModel) {
     Row(modifier = Modifier
@@ -158,6 +157,7 @@ fun LandscapeLayout(gameViewModel: GameViewModel) {
     }
 }
 
+// Provides the layout for Portrait orientatiom
 @Composable
 fun PortraitLayout(gameViewModel: GameViewModel) {
     // Organizes the guesses and letter panels into a column
@@ -176,7 +176,7 @@ fun PortraitLayout(gameViewModel: GameViewModel) {
     }
 }
 
-// Panels.kt
+// Panel with the letter buttons
 @Composable
 fun LetterPanel(gameViewModel: GameViewModel, modifier: Modifier = Modifier) {
     val letters = gameViewModel.letters
@@ -213,6 +213,7 @@ fun LetterPanel(gameViewModel: GameViewModel, modifier: Modifier = Modifier) {
     }
 }
 
+//Panel with the Hint button and text
 @Composable
 fun HintPanel(gameViewModel: GameViewModel, modifier: Modifier = Modifier) {
     val context = LocalContext.current
@@ -237,12 +238,14 @@ fun HintPanel(gameViewModel: GameViewModel, modifier: Modifier = Modifier) {
     }
 }
 
+//Panel with the gallow image and correct letters display
 @Composable
 fun GuessesPanel(gameViewModel: GameViewModel, modifier: Modifier = Modifier) {
     Column(
         modifier = modifier.padding(8.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
+        //Abstraction of the img stuff to the HangmanFigure composable
         HangmanFigure(wrongGuesses = gameViewModel.wrongGuesses)
 
         Spacer(modifier = Modifier.height(16.dp))
@@ -285,7 +288,7 @@ fun GuessesPanel(gameViewModel: GameViewModel, modifier: Modifier = Modifier) {
     }
 }
 
-// HangmanFigure.kt
+// Panel with the Gallow img
 @Composable
 fun HangmanFigure(wrongGuesses: Int) {
     val hangmanImages = listOf(
